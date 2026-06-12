@@ -1,5 +1,6 @@
 import { Controler } from "./controler.js";
 import { IObserver } from "./IObserver.js";
+import { pixel } from "./pixel.js";
 
 export class View implements IObserver {
 
@@ -9,6 +10,7 @@ export class View implements IObserver {
     private btn_connect: HTMLInputElement;
     private couleur: HTMLInputElement;
     private btn_disconnect: HTMLInputElement;
+    private pixel : pixel;
 
     constructor() {
         this.c = document.getElementById('Canvas') as HTMLCanvasElement;
@@ -33,9 +35,13 @@ export class View implements IObserver {
         }
     }
 
-    receive(message : string)
-    {
-        console.log(message)
+    receive(message: string): void {
+    const lignes: string[] = message.split("\n");
+
+    for (const ligne of lignes) {
+        const pixel: pixel = pixel.fromString(ligne);
+        this.drawPixel(pixel);
     }
+}
 
 }
