@@ -1,7 +1,13 @@
+import { IObservable } from "./IObservable.js";
 import { IObserver } from "./IObserver.js";
 
-export class View implements IObserver {
+
+export class Controler implements IObservable {
+
+    #observers: Set<IObserver>
+
     constructor() {
+        this.#observers = new Set();
         let c = document.querySelector('canvas') as HTMLCanvasElement;
         let nom = document.querySelector('#nom') as HTMLInputElement;
         let btn_connect = document.querySelector('#btn-connect') as HTMLInputElement;
@@ -12,9 +18,21 @@ export class View implements IObserver {
         c.height = 400;
     }
 
-    notify(...args: unknown[]): void
+    subscribe(observer: IObserver): void
     {
-        console.log(`OBSERVER_ received ${JSON.stringify(args)}`);
+        this.#observers.add(observer)
+
+    }
+    
+    unsubscribe(observer: IObserver): void
+    {
+        this.#observers.delete(observer)
     }
 
+    notify(...args: unknown[]): void
+    {
+        for (const observer of this.#observers) {
+            observer.notify(...args);
+        }
+    }
 }
