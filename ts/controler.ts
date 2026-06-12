@@ -5,9 +5,12 @@ import { IObserver } from "./IObserver.js";
 export class Controler implements IObservable {
 
     #observers: Set<IObserver>
+    WebSocket : WebSocket
+
 
     constructor() {
         this.#observers = new Set();
+        this.WebSocket = new WebSocket("ws://localhost:8080");
         let c = document.querySelector('canvas') as HTMLCanvasElement;
         let nom = document.querySelector('#nom') as HTMLInputElement;
         let btn_connect = document.querySelector('#btn-connect') as HTMLInputElement;
@@ -29,10 +32,10 @@ export class Controler implements IObservable {
         this.#observers.delete(observer)
     }
 
-    notify(...args: unknown[]): void
+    notify(s: string): void
     {
         for (const observer of this.#observers) {
-            observer.notify(...args);
+            observer.notify(s);
         }
     }
 }

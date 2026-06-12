@@ -1,5 +1,5 @@
 
 export interface IObserver {
 
-    notify(...args: unknown[]): void
+    notify(s: string): void
 }
