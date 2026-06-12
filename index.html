@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>TD6 - PixelWAR</title>
+    <meta charset="utf-8" >
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel=stylesheet href="css/style.css">
+    <script type="module" src="js/main.js"></script>
+</head>
+<body>
+    <header>
+        <h1>TP3 : Pixel WAR</h1>
+    </header>
+    <main>
+        <form action="" method="get" class="form-example">
+            <div class="form-example">
+                <label for="name">Nom: </label>
+                <input type="text" name="name" id="name" required />
+                <button type="button" id="btn-connect">Connexion</button>
+            </div>
+            <div class="form-example">
+                <label for="couleur">couleur </label>
+                <input type="color" name="couleur" id="couleur" required />
+            </div>
+            <canvas id="Canvas" width="800" height="800"></canvas>
+
+            <div class="form-example">
+                <input type="button" value="Deconnexion" id="btn-disconnect" />
+            </div>
+        </form>
+    </main>        
+</body>
+</html>
