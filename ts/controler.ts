@@ -49,4 +49,5 @@ export class Controler implements IObservable {
             console.log("message reçu : " + event.data);
             this.notify(event.data);
         }
-}}
+    }
+}

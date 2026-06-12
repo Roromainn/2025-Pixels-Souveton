@@ -33,4 +33,9 @@ export class View implements IObserver {
         }
     }
 
+    receive(message : string)
+    {
+        console.log(message)
+    }
+
 }
