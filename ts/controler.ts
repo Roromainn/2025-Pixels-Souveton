@@ -6,8 +6,8 @@ import { Pixel } from "./pixel.js";
 export class Controler implements IObservable {
 
     #observers: Set<IObserver>
-    WebSocket : WebSocket
-    nomJoueur : string
+    private WebSocket : WebSocket
+    private nomJoueur : string
 
 
     constructor(s: string) {
@@ -51,7 +51,15 @@ export class Controler implements IObservable {
         }
     }
 
+    /** Envoie un pixel au serveur */
     sendPixel(p: Pixel): void {
-    this.WebSocket.send(p.toString());
-}
+        this.WebSocket.send(p.toString());
+    }
+
+    /** Ferme la connexion WebSocket et notifie les observateurs */
+    deco(): void {
+        this.WebSocket.close();
+        this.notify("disconnected");
+
+    }
 }
