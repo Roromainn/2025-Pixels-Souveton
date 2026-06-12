@@ -1,4 +1,4 @@
-export class pixel{
+export class Pixel{
     private x : number;
     private y : number;
     private intColor : number;
@@ -15,23 +15,32 @@ export class pixel{
         return this.intColor;
     }
 
-    public get StrColor(): string{
-        return this.strColor
-    }
+    public get StrColor(): string {
+        const hex = ("00000000" + this.intColor.toString(16)).slice(-8);
+        const a = hex.slice(0, 2); 
+        const r = hex.slice(2, 4);
+        const g = hex.slice(4, 6);
+        const b = hex.slice(6, 8);
+        return `rgba(${parseInt(r,16)}, ${parseInt(g,16)}, ${parseInt(b,16)}, ${parseInt(a,16)/255})`;
+}
 
     constructor(x:number, y:number, color:number){
         this.intColor = color;
         this.x = x;
         this.y = y;
-        this.strColor = "";
+        this.strColor = "#" + color.toString(16).padStart(8, "0");
+  }
+
+    static fromString(str: string): Pixel {
+        const chaine: string[] = str.split(",");
+        return new Pixel(
+            parseInt(chaine[0]),
+            parseInt(chaine[1]),
+            parseInt(chaine[2])
+        );
     }
 
-    fromString(str:string):pixel{
-        const chaine: string[] = str.split(","); 
-        return new pixel(chaine[0] as unknown  as number ,chaine[1] as unknown  as number,chaine[2] as unknown  as number)
-    }
-
-    toString():string{
-        return this.x as unknown  as string,this.y as unknown  as string,this.intColor as unknown  as string
+    toString(): string {
+    return this.x + "," + this.y + "," + this.intColor;
     }
 }

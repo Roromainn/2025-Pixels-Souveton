@@ -1,5 +1,6 @@
 import { IObservable } from "./IObservable.js";
 import { IObserver } from "./IObserver.js";
+import { Pixel } from "./pixel.js";
 
 
 export class Controler implements IObservable {
@@ -28,12 +29,11 @@ export class Controler implements IObservable {
         this.#observers.delete(observer)
     }
 
-    notify(s: string): void
-    {
-        for (const observer of this.#observers) {
-            observer.notify(s);
-        }
+    notify(s: string): void {
+    for (const observer of this.#observers) {
+        observer.receive(s); 
     }
+}
 
     private connected()
     {
@@ -50,4 +50,8 @@ export class Controler implements IObservable {
             this.notify(event.data);
         }
     }
+
+    sendPixel(p: Pixel): void {
+    this.WebSocket.send(p.toString());
+}
 }

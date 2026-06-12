@@ -4,7 +4,8 @@
       "module": "es6",
       "outDir": "js",
       "sourceMap": true,
-      "rootDir": "ts"
+      "rootDir": "ts",
+      "lib": ["es2017", "dom"],
     },
     "exclude": ["node_modules","**/*.spec.ts"]
   }

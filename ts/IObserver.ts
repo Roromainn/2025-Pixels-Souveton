@@ -1,5 +1,4 @@
 
 export interface IObserver {
-
-    notify(s: string): void
+    receive(s: string): void;
 }

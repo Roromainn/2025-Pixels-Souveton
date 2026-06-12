@@ -1,6 +1,6 @@
 import { Controler } from "./controler.js";
 import { IObserver } from "./IObserver.js";
-import { pixel } from "./pixel.js";
+import { Pixel } from "./pixel.js";
 
 export class View implements IObserver {
 
@@ -10,7 +10,6 @@ export class View implements IObserver {
     private btn_connect: HTMLInputElement;
     private couleur: HTMLInputElement;
     private btn_disconnect: HTMLInputElement;
-    private pixel : pixel;
 
     constructor() {
         this.c = document.getElementById('Canvas') as HTMLCanvasElement;
@@ -22,6 +21,8 @@ export class View implements IObserver {
         this.c.width = 400;
         this.c.height = 400;
         this.btn_connect.addEventListener("click", () => { this.connection() });
+        this.c.addEventListener("click", (event) => { this.click(event) });
+
     }
 
     notify(s: string): void {
@@ -37,11 +38,35 @@ export class View implements IObserver {
 
     receive(message: string): void {
     const lignes: string[] = message.split("\n");
-
+    
     for (const ligne of lignes) {
-        const pixel: pixel = pixel.fromString(ligne);
-        this.drawPixel(pixel);
+        if (ligne.trim() === "") continue;
+        const p: Pixel = Pixel.fromString(ligne);
+        this.drawPixel(p);
+    }
+}   
+
+    drawPixel(p: Pixel) {
+    const rect = this.c.getBoundingClientRect();
+    let ctx = this.c.getContext("2d");
+    if (ctx != null) {
+        ctx.fillStyle = p.StrColor;
+        ctx.fillRect(p.X, p.Y, 2, 2);
+        console.log("dessiné !"); 
     }
 }
+
+    private click(event: MouseEvent): void {
+    const rect = this.c.getBoundingClientRect();
+    const mouseX = event.clientX - rect.left;
+    const mouseY = event.clientY - rect.top;
+    const x = Math.round(mouseX * this.c.width / rect.width);
+    const y = Math.round(mouseY * this.c.height / rect.height);
+    const colorHtml = this.couleur.value;
+    const argb = parseInt("ff" + colorHtml.replace("#", ""), 16);
+    const p = new Pixel(x, y, argb);
+    this.drawPixel(p);
+}
+
 
 }
