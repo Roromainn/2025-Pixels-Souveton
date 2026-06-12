@@ -3,7 +3,7 @@ import { IObserver } from "./IObserver.js";
 
 export class View implements IObserver {
 
-    private controler: Controler;
+    private controler: Controler | undefined;
     private c: HTMLCanvasElement;
     private nom: HTMLInputElement;
     private btn_connect: HTMLInputElement;
@@ -11,20 +11,26 @@ export class View implements IObserver {
     private btn_disconnect: HTMLInputElement;
 
     constructor() {
-        this.controler = new Controler();
-        this.c = document.querySelector('canvas') as HTMLCanvasElement;
-        this.nom = document.querySelector('#nom') as HTMLInputElement;
-        this.btn_connect = document.querySelector('#btn-connect') as HTMLInputElement;
-        this.couleur = document.querySelector('#couleur') as HTMLInputElement;
-        this.btn_disconnect = document.querySelector('#btn-disconnect') as HTMLInputElement;
+        this.c = document.getElementById('Canvas') as HTMLCanvasElement;
+        this.nom = document.getElementById('nom') as HTMLInputElement;
+        this.btn_connect = document.getElementById("btn-connect") as HTMLInputElement;
+        this.couleur = document.getElementById('couleur') as HTMLInputElement;
+        this.btn_disconnect = document.getElementById('btn-disconnect') as HTMLInputElement;
         this.c.style.backgroundColor = "orange";
         this.c.width = 400;
         this.c.height = 400;
-        this.controler.subscribe(this);
+        this.btn_connect.addEventListener("click", () => { this.connection() });
     }
 
     notify(s: string): void {
         console.log(s);
+    }
+
+    private connection() {
+        this.btn_connect.onclick = () => {
+            this.controler = new Controler(this.nom.value);
+            this.controler.subscribe(this);
+        }
     }
 
 }

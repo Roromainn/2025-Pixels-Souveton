@@ -6,19 +6,15 @@ export class Controler implements IObservable {
 
     #observers: Set<IObserver>
     WebSocket : WebSocket
+    nomJoueur : string
 
 
-    constructor() {
+    constructor(s: string) {
         this.#observers = new Set();
-        this.WebSocket = new WebSocket("ws://localhost:8080");
-        let c = document.querySelector('canvas') as HTMLCanvasElement;
-        let nom = document.querySelector('#nom') as HTMLInputElement;
-        let btn_connect = document.querySelector('#btn-connect') as HTMLInputElement;
-        let couleur = document.querySelector('#couleur') as HTMLInputElement;
-        let btn_disconnect = document.querySelector('#btn-disconnect') as HTMLInputElement;
-        c.style.backgroundColor = "orange";
-        c.width = 400;
-        c.height = 400;
+        this.WebSocket = new WebSocket("ws://srv-iq-etu2/testws/ws");
+        this.nomJoueur = s;
+        this.connected();
+        this.receive();
     }
 
     subscribe(observer: IObserver): void
@@ -38,4 +34,19 @@ export class Controler implements IObservable {
             observer.notify(s);
         }
     }
-}
+
+    private connected()
+    {
+        this.WebSocket.onopen = (event) => {
+            this.WebSocket.send(this.nomJoueur);
+            console.log("nom du joueur envoyé : " + this.nomJoueur);
+        }
+    }
+
+    private receive()
+    {
+        this.WebSocket.onmessage = (event) => {
+            console.log("message reçu : " + event.data);
+            this.notify(event.data);
+        }
+}}
